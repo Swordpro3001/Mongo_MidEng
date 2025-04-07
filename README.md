@@ -228,3 +228,43 @@ public class DataSeeder implements CommandLineRunner {
    ```
 
 5. **Lombok**: Reduziert Boilerplate-Code durch Annotationen wie `@Data`, `@NoArgsConstructor` und `@AllArgsConstructor`
+
+## Fragestellungen
+### Vorteile eines NoSQL Repository
+1. Skalierbarkeit
+2. Flexibles Schema
+3. Schnelle Leistung bei großen Datenmengen
+4. Geeignet für unstrukturierte Daten
+
+### Nachteile eines NoSQL Repository
+1. Keine Standards
+2. Begrenzte Transaktionsunterstützung
+3. Komplexere Abfragen
+4. Weniger ausgereift
+
+### Schwierigkeiten bei der Datenzusammenführung
+- Unterschiedliche Schemas
+- Datenqualität
+- Hoher Ressourcenbedarf
+- Semantische Konflikte
+
+### Arten von NoSQL-Datenbanken
+- **Dokumentorientiert:** MongoDB  
+- **Schlüssel-Wert:** Redis  
+- **Spaltenorientiert:** Apache Cassandra  
+- **Graph:** Neo4j  
+
+### CAP-Theorem Abkürzungen
+- **CA:** Konsistenz + Verfügbarkeit  
+- **CP:** Konsistenz + Partitionstoleranz  
+- **AP:** Verfügbarkeit + Partitionstoleranz  
+
+### SQL-Befehle
+- **Gesamtlagerbestand:**  
+  ```sql
+  SELECT SUM(Lagerbestand) FROM Lager WHERE Produkt_ID = 'X';
+  ```
+- **Lagerbestand eines Standorts:**  
+  ```sql
+  SELECT Lagerbestand FROM Lager WHERE Produkt_ID = 'X' AND Standort_ID = 'Y';
+  ```
