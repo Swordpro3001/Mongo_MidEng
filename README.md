@@ -259,12 +259,73 @@ public class DataSeeder implements CommandLineRunner {
 - **CP:** Konsistenz + Partitionstoleranz  
 - **AP:** Verfügbarkeit + Partitionstoleranz  
 
-### SQL-Befehle
-- **Gesamtlagerbestand:**  
-  ```sql
-  SELECT SUM(Lagerbestand) FROM Lager WHERE Produkt_ID = 'X';
-  ```
-- **Lagerbestand eines Standorts:**  
-  ```sql
-  SELECT Lagerbestand FROM Lager WHERE Produkt_ID = 'X' AND Standort_ID = 'Y';
-  ```
+Query 1: Total Inventory of a Product Across All Warehouse Locations
+Business Question: What is the total inventory of Product X across all warehouse locations?
+MongoDB shell command to find total quantity of "Hammer" across all warehouses
+```mongosh
+db.warehouses.aggregate([
+  { $unwind: "$products" },
+  { $match: { "products.name": "Hammer" } },
+  { $group: {
+      _id: "$products.name",
+      totalQuantity: { $sum: "$products.quantity" },
+      locations: { $push: { location: "$location", quantity: "$products.quantity" } }
+    }
+  }
+])
+```
+Query 2: Products with Low Inventory Across All Warehouses
+Business Question: Which products have less than a specific threshold quantity (e.g., 50 units) across all warehouses?
+MongoDB shell command to find products with total quantity less than 50
+```mongosh
+db.warehouses.aggregate([
+  { $unwind: "$products" },
+  { $group: {
+      _id: { productId: "$products.productId", name: "$products.name" },
+      totalQuantity: { $sum: "$products.quantity" },
+      category: { $first: "$products.category" },
+      warehouseLocations: { $push: "$location" }
+    }
+  },
+  { $match: { "totalQuantity": { $lt: 50 } } },
+  { $project: {
+      _id: 0,
+      productId: "$_id.productId",
+      name: "$_id.name",
+      category: 1,
+      totalQuantity: 1,
+      warehouseLocations: 1
+    }
+  },
+  { $sort: { totalQuantity: 1 } }
+])
+```
+Query 3: Inventory Distribution by Category and Location
+Business Question: How is our inventory distributed by product category across different warehouse locations?
+MongoDB shell command to analyze inventory distribution by category and location
+```Mongosh
+db.warehouses.aggregate([
+  { $unwind: "$products" },
+  { $group: {
+      _id: { location: "$location", category: "$products.category" },
+      totalItems: { $sum: 1 },
+      totalQuantity: { $sum: "$products.quantity" },
+      products: { $push: { 
+        name: "$products.name", 
+        productId: "$products.productId", 
+        quantity: "$products.quantity" 
+      }}
+    }
+  },
+  { $project: {
+      _id: 0,
+      location: "$_id.location",
+      category: "$_id.category",
+      totalItems: 1,
+      totalQuantity: 1,
+      products: 1
+    }
+  },
+  { $sort: { location: 1, category: 1 } }
+])
+```
