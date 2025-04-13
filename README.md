@@ -262,7 +262,7 @@ public class DataSeeder implements CommandLineRunner {
 Query 1: Total Inventory of a Product Across All Warehouse Locations
 Business Question: What is the total inventory of Product X across all warehouse locations?
 MongoDB shell command to find total quantity of "Hammer" across all warehouses
-```mongosh
+```javascript
 db.warehouses.aggregate([
   { $unwind: "$products" },
   { $match: { "products.name": "Hammer" } },
@@ -277,7 +277,7 @@ db.warehouses.aggregate([
 Query 2: Products with Low Inventory Across All Warehouses
 Business Question: Which products have less than a specific threshold quantity (e.g., 50 units) across all warehouses?
 MongoDB shell command to find products with total quantity less than 50
-```mongosh
+```javascript
 db.warehouses.aggregate([
   { $unwind: "$products" },
   { $group: {
@@ -303,7 +303,7 @@ db.warehouses.aggregate([
 Query 3: Inventory Distribution by Category and Location
 Business Question: How is our inventory distributed by product category across different warehouse locations?
 MongoDB shell command to analyze inventory distribution by category and location
-```Mongosh
+```javascript
 db.warehouses.aggregate([
   { $unwind: "$products" },
   { $group: {
