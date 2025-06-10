@@ -277,7 +277,7 @@ db.warehouses.aggregate([
 Query 2: Produkte mit geringem Lagerbestand in allen Lagern
 Welche Produkte haben insgesamt weniger als eine bestimmte Schwellenmenge (z. B. 50 Einheiten) in allen Lagern?
 MongoDB-Shell-Befehl zur Ermittlung von Produkten mit einer Gesamtmenge von weniger als 50:
-```MongoShell
+```javascript
 db.warehouses.aggregate([
   { $unwind: "$products" },
   { $group: {
@@ -303,7 +303,7 @@ db.warehouses.aggregate([
 Query 3: Lagerbestandsverteilung nach Kategorie und Standort
 Wie ist unser Lagerbestand nach Produktkategorien auf verschiedene Lagerstandorte verteilt?
 MongoDB-Shell-Befehl zur Analyse der Lagerbestandsverteilung nach Kategorie und Standort:
-```MongoShell
+```javascript
 db.warehouses.aggregate([
   { $unwind: "$products" },
   { $group: {
