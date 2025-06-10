@@ -259,9 +259,9 @@ public class DataSeeder implements CommandLineRunner {
 - **CP:** Konsistenz + Partitionstoleranz  
 - **AP:** Verfügbarkeit + Partitionstoleranz  
 
-Query 1: Total Inventory of a Product Across All Warehouse Locations
-Business Question: What is the total inventory of Product X across all warehouse locations?
-MongoDB shell command to find total quantity of "Hammer" across all warehouses
+Query 1: Gesamter Lagerbestand eines Produkts in allen Lagerstandorten
+Wie hoch ist der Gesamtbestand des Produkts „Hammer“ in allen Lagerstandorten?
+MongoDB-Shell-Befehl zur Ermittlung der Gesamtmenge von „Hammer“ über alle Lager hinweg:
 ```javascript
 db.warehouses.aggregate([
   { $unwind: "$products" },
@@ -274,10 +274,10 @@ db.warehouses.aggregate([
   }
 ])
 ```
-Query 2: Products with Low Inventory Across All Warehouses
-Business Question: Which products have less than a specific threshold quantity (e.g., 50 units) across all warehouses?
-MongoDB shell command to find products with total quantity less than 50
-```javascript
+Query 2: Produkte mit geringem Lagerbestand in allen Lagern
+Welche Produkte haben insgesamt weniger als eine bestimmte Schwellenmenge (z. B. 50 Einheiten) in allen Lagern?
+MongoDB-Shell-Befehl zur Ermittlung von Produkten mit einer Gesamtmenge von weniger als 50:
+```MongoShell
 db.warehouses.aggregate([
   { $unwind: "$products" },
   { $group: {
@@ -300,10 +300,10 @@ db.warehouses.aggregate([
   { $sort: { totalQuantity: 1 } }
 ])
 ```
-Query 3: Inventory Distribution by Category and Location
-Business Question: How is our inventory distributed by product category across different warehouse locations?
-MongoDB shell command to analyze inventory distribution by category and location
-```javascript
+Query 3: Lagerbestandsverteilung nach Kategorie und Standort
+Wie ist unser Lagerbestand nach Produktkategorien auf verschiedene Lagerstandorte verteilt?
+MongoDB-Shell-Befehl zur Analyse der Lagerbestandsverteilung nach Kategorie und Standort:
+```MongoShell
 db.warehouses.aggregate([
   { $unwind: "$products" },
   { $group: {
